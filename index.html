@@ -1,21 +1,153 @@
-<HTml></HTml>
-<html lang="en">
+!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" 
-    content="width=device-width, initial-scale=1.0">
-    <title>document</title>head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarsila do Amaral | Vida e Obra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #2b0829;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #470431 0%, #b637c7 100%);
+            color: #ece1ea;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: #cb88d1;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #921072;
+            border-bottom: 3px solid #920066;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .bio-content {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .bio-text {
+            flex: 2;
+            min-width: 280px;
+        }
+
+        .obras-lista {
+            list-style: none;
+        }
+
+        .obras-lista li {
+            background: #df84e7;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-left: 5px solid #bc4cd3;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        .obras-lista li:hover {
+            transform: translateX(5px);
+            background: #f0f7f4;
+        }
+
+        .obras-lista strong {
+            color: #961174;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #333;
+            color: #fff;
+            margin-top: 60px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
- <header>
-    <h1>Tarsila do amaral</h1>
-<p>Vou compartilhar conhecimentos, imagens e curiosidades sobre Tarsila do amaral</p>
-<header>
-<main>
-<H2>MEU PRIMEIRO POST</H2>
-<p>Por: Marciele Ribeiro</p>
-<p>Sejam bem vindos ao meu blog, aqui vou compartilhar tudo sobre Tarsila do amaral</p>
-<h2></h2>
+
+    <header>
+        <h1>Tarsila do Amaral</h1>
+        <p>A força e as cores do Modernismo Brasileiro</p>
+    </header>
+
+    <main>
+        <section id="biografia">
+            <h2>Quem Foi?</h2>
+            <div class="bio-content">
+                <div class="bio-text">
+                    <p><strong>Tarsila do Amaral</strong> (1886 – 1973) foi uma das pintoras e desenhistas mais importantes do Brasil. Figura central da primeira fase do movimento modernista brasileiro, ela soube como ninguém misturar as técnicas vanguardistas europeias (como o cubismo) com as cores e temas da nossa terra.</p>
+                    <br>
+                    <p>Embora não tenha participado fisicamente da Semana de Arte Moderna de 1922, ela integrou o célebre "Grupo dos Cinco" ao lado de Anita Malfatti, Oswald de Andrade, Mário de Andrade e Menotti Del Picchia, definindo os rumos da nova identidade artística nacional.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="fases">
+            <h2>Principais Fases Artísticas</h2>
+            <p>A carreira de Tarsila é marcada por momentos marcantes que refletiam suas transformações pessoais e políticas:</p>
+            <br>
+            <ul class="obras-lista">
+                <li><strong>Pau-Brasil (1924):</strong> Cores vivas ("caipiras", como ela dizia) mostrando a fauna, a flora e a modernidade das cidades brasileiras.</li>
+                <li><strong>Antropofágica (1928):</strong> Inspirada pelo quadro <em>Abaporu</em>, essa fase trazia figuras místicas, sonhos e a ideia de "engolir" a cultura estrangeira para criar algo puramente nacional.</li>
+                <li><strong>Social (Década de 1930):</strong> Focada nos trabalhadores, na industrialização e nos problemas sociais do país, cujo maior exemplo é a tela <em>Operários</em>.</li>
+            </ul>
+        </section>
+
+        <section id="obras-primas">
+            <h2>Obras de Destaque</h2>
+            <p>Se você quiser pesquisar mais sobre ela, não deixe de conferir estas telas revolucionárias:</p>
+            <br>
+            <ul class="obras-lista">
+                <li><strong>A Caipirinha (1923)</strong> - Uma de suas primeiras grandes conexões com as memórias de infância.</li>
+                <li><strong>Anaporu (1928)</strong> - A obra de arte mais valorizada do Brasil, que deu origem ao Manifesto Antropófago.</li>
+                <li><strong>Operários (1933)</strong> - O marco inicial da pintura social brasileira, exibindo a diversidade do povo trabalhador.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>Página criada para homenagear a história da arte nacional.</p>
+    </footer>
 
 </body>
 </html>
