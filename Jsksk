@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profissional Nota 10 - Manual Interativo</title>
+<style>
+body{margin:0;font-family:Arial;background:#0b1e42;color:#0b1e42}
+.topo{background:#0b1e42;color:#ffcc00;padding:12px 20px;display:flex;justify-content:space-between;font-weight:bold;position:sticky;top:0;z-index:10}
+.barra{height:6px;background:#162d5e} #progress{height:100%;background:#ffcc00;width:5%;transition:0.4s}
+.container{max-width:700px;margin:20px auto;background:#fff;border-radius:20px;padding:25px;min-height:600px}
+.tela{display:none} .tela.ativa{display:block;animation:entrar 0.3s}
+@keyframes entrar{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+h1{text-align:center;font-size:26px} h2{font-size:20px;color:#0b1e42}
+.card{border:2px solid #e9e9e9;border-radius:14px;padding:14px;margin:10px 0;background:#fafafa;cursor:pointer}
+.card:hover{border-color:#ffcc00}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;background:#ffcc00;font-weight:bold;font-size:16px;margin-top:12px;cursor:pointer}
+.btn2{width:100%;padding:12px;border:2px solid #0b1e42;border-radius:12px;background:#fff;font-weight:bold;margin-top:8px;cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.avatar{border:3px solid #eee;border-radius:16px;padding:10px;text-align:center;cursor:pointer;background:#fff}
+.avatar b{font-size:12px}
+.lib{position:fixed;right:16px;bottom:16px;background:#1a73e8;color:#fff;padding:10px 16px;border-radius:24px;font-weight:bold;cursor:pointer}
+.pop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+.popbox{background:#fff;border-radius:16px;padding:20px;max-width:380px;width:100%}
+.ok{background:#d1fae5;border-color:#10b981} .erro{background:#fee2e2;border-color:#ef4444}
+</style>
+</head>
+<body>
+<div class="topo"><span>📘 Manual Nota 10</span><span id="num">1 / 20</span></div>
+<div class="barra"><div id="progress"></div></div>
+
+<div class="container">
+
+<!-- 1 CAPA -->
+<div class="tela ativa" id="t1"><h1>🏆 FUNCIONÁRIO<br>NOTA 10</h1><p style="text-align:center">Postura Profissional que Encanta</p><div style="text-align:center;font-size:70px;margin:20px">⭐</div><button class="btn" onclick="ir(2)">Botão ENTRAR</button></div>
+
+<!-- 2 APRESENTACAO -->
+<div class="tela" id="t2"><h2>📖 Apresentação do manual</h2><p>Manual prático para ser Nota 10 no atendimento.</p><button class="btn" onclick="ir(3)">Botão COMEÇAR</button><button class="btn2" onclick="ir(1)">Voltar</button></div>
+
+<!-- 3 MISSAO -->
+<div class="tela" id="t3"><h2>🎯 Nossa missão: Postura Profissional</h2><div class="card" onclick="popup('Missão: Atender com excelência, cordialidade e inclusão de todos, inclusive clientes surdos em Libras.')">Botão "Conheça a missão" - clique</div><button class="btn" onclick="ir(4)">Próximo</button></div>
+
+<!-- 4 QUEM É -->
+<div class="tela" id="t4"><h2>👤 Quem é o Profissional Nota 10?</h2><div class="grid">
+<div class="avatar" onclick="popup('LUAN LIBRAS: Fala Libras, acessível, inclusivo')">🤟<br><b>1 Luan Libras</b></div>
+<div class="avatar" onclick="popup('ANA PROATIVA: Ágil, resolve rápido')">⚡<br><b>2 Ana Proativa</b></div>
+<div class="avatar" onclick="popup('CARLOS DESMOTIVADO: Anti-exemplo')">😴<br><b>3 Carlos</b></div>
+<div class="avatar" onclick="popup('SOFIA ACOLHEDORA: Empática e querida')">💚<br><b>4 Sofia</b></div>
+</div><p style="font-size:12px;color:#666;margin-top:10px">Avatar + características clicáveis</p><button class="btn" onclick="ir(5)">Próximo</button></div>
+
+<!-- 5 PROJETOS -->
+<div class="tela" id="t5"><h2>🔗 O profissional e os projetos anteriores</h2><div class="card" onclick="popup('Projeto Acessibilidade: Implantamos Libras')">Botão para cada projeto - Projeto 1</div><div class="card" onclick="popup('Projeto Fila Zero: Reduzimos tempo')">Botão Projeto 2</div><div class="card" onclick="popup('Projeto Acolhimento: Atendimento humano')">Botão Projeto 3</div><button class="btn" onclick="ir(6)">Próximo</button></div>
+
+<!-- 6 A 10 - VALORES -->
+<div class="tela" id="t6"><h2>😊 6 Cordialidade</h2><p>Tratar todos com simpatia.</p><div class="card" onclick="this.innerHTML='<b>Exemplo:</b> Bom dia! Seja bem-vindo! 😊'"><i>"Ver exemplo"</i> - clique</div><button class="btn" onclick="ir(7)">Próximo</button></div>
+
+<div class="tela" id="t7"><h2>💜 7 Empatia</h2><div class="card" onclick="this.innerHTML='<b>Exemplo:</b> Entendo sua frustração, vamos resolver juntos.'"><i>"Ver exemplo"</i></div><button class="btn" onclick="ir(8)">Próximo</button></div>
+
+<div class="tela" id="t8"><h2>💡 8 Iniciativa</h2><div class="card" onclick="this.innerHTML='<b>Exemplo:</b> Ver fila e já agir sem mandar.'"><i>"Ver exemplo"</i></div><button class="btn" onclick="ir(9)">Próximo</button></div>
+
+<div class="tela" id="t9"><h2>🧡 9 Respeito</h2><div class="card" onclick="this.innerHTML='Respeito a todos, sem exceção.'"><i>"Ver exemplo"</i></div><button class="btn" onclick="ir(10)">Próximo</button></div>
+
+<div class="tela" id="t10"><h2>🔄 10 Flexibilidade</h2><div class="card" onclick="this.innerHTML='Se adapta a mudanças com leveza.'"><i>"Ver exemplo"</i></div><button class="btn" onclick="ir(11)">Próximo</button></div>
+
+<!-- 11 COMPORTAMENTO -->
+<div class="tela" id="t11"><h2>👔 11 Comportamento profissional</h2><div class="card" id="c11" onclick="document.getElementById('c11').innerHTML='<b>O que fazer:</b> Pontual, uniforme limpo, educado<br><b>Evitar:</b> Fofoca, celular, atraso'">"O que fazer / evitar" - clique para trocar</div><button class="btn" onclick="ir(12)">Próximo</button></div>
+
+<!-- 12 COMUNICACAO LIBRAS - MAIS IMPORTANTE -->
+<div class="tela" id="t12"><h2>🔵 12 Comunicação e intérprete de línguas</h2><p><b>Situação interativa:</b> Cliente surdo chegou.</p><div class="grid">
+<div class="avatar" onclick="libOk(this)"><span style="font-size:30px">🤟</span><br><b>Enviar LUAN</b></div>
+<div class="avatar" onclick="libErr(this)"><span style="font-size:30px">😴</span><br><b>Enviar CARLOS</b></div>
+</div><div id="f12"></div><button class="btn" onclick="ir(13)">Próximo</button></div>
+
+<!-- 13 ATENDIMENTO PARA TODOS -->
+<div class="tela" id="t13"><h2>♿ 13 Atendimento para todos</h2><div class="card" onclick="popup('Idoso: Fale devagar, Sofia acolhe')">Perfil: Idoso</div><div class="card" onclick="popup('Surdo: Luan em Libras')">Perfil: Surdo - Libras</div><div class="card" onclick="popup('Apressado: Ana resolve rápido')">Perfil: Cliente com pressa</div><button class="btn" onclick="ir(14)">Próximo</button></div>
+
+<!-- 14 SITUACOES -->
+<div class="tela" id="t14"><h2>🎭 14 Situações de atendimento</h2><div class="card" onclick="popup('Escolheu: Produto com defeito - Troca imediata + pedido de desculpas')">Escolha uma situação: Produto com defeito</div><div class="card" onclick="popup('Escolheu: Cliente não entende - Chama Luan Libras')">Escolha uma situação: Barreira de idioma</div><button class="btn" onclick="ir(15)">Próximo</button></div>
+
+<!-- 15 CONFLITOS -->
+<div class="tela" id="t15"><h2>🤯 15 Conflitos e reclamações</h2><p><b>"Como agir?"</b> Cliente gritando.</p><div class="card" onclick="this.className='card ok';popup('CERTO! Empatia resolve')">B) "Entendo sua raiva, vamos resolver AGORA"</div><div class="card" onclick="this.className='card erro'">A) Ignorar cliente</div><button class="btn" onclick="ir(16)">Próximo</button></div>
+
+<!-- 16 SAC -->
+<div class="tela" id="t16"><h2>📞 16 SAC: encaminhamento e registro</h2><div class="card" onclick="this.innerHTML='FLUXOGRAMA:<br>1 Ouvir → 2 Anotar → 3 Protocolo → 4 Encaminhar → 5 Retornar'">Fluxograma clicável - clique para abrir</div><button class="btn" onclick="ir(17)">Próximo</button></div>
+
+<!-- 17 ATITUDES -->
+<div class="tela" id="t17"><h2>⭐ 17 Atitudes de um Profissional Nota 10</h2><div class="grid"><div class="card ok"><b>FAÇA</b><br>✔ Sorria<br>✔ Libras: Obrigado 🤟<br>✔ Ajude</div><div class="card erro"><b>NÃO FAÇA</b><br>✖ Mal humor<br>✖ "Não sei"<br>✖ Celular</div></div><button class="btn" onclick="ir(18)">Próximo</button></div>
+
+<!-- 18 CASO PRATICO -->
+<div class="tela" id="t18"><h2>🎬 18 Caso prático completo</h2><p><b>Situação + solução:</b> Loja cheia + cliente surdo + produto quebrado.<br><br><b>Solução:</b> Luan traduz, Ana troca, Sofia acolhe. Time Nota 10!</p><button class="btn" onclick="ir(19)">Próximo</button></div>
+
+<!-- 19 CHECKLIST -->
+<div class="tela" id="t19"><h2>✅ 19 Checklist/Desafio Nota 10</h2><p>Quiz/checklist - clique para marcar:</p><div class="card" onclick="this.classList.add('ok')">☐ Sei cumprimentar em Libras</div><div class="card" onclick="this.classList.add('ok')">☐ Sou cordial e empático</div><div class="card" onclick="this.classList.add('ok')">☐ Tenho iniciativa</div><div class="card" onclick="this.classList.add('ok')">☐ Respeito todos</div><button class="btn" onclick="ir(20)">Finalizar Quiz</button></div>
+
+<!-- 20 ENCERRAMENTO -->
+<div class="tela" id="t20"><h1>🎉 Encerramento</h1><p style="text-align:center">Parabéns! Você completou o manual.<br><b>O diferencial é a INTEGRAÇÃO</b><br><br>🤟 Obrigado em Libras!</p><div class="card" style="background:#0b1e42;color:#ffcc00;text-align:center"><b>VOTAÇÃO REAL:</b><br>Quem foi Nota 10 hoje?<br><button class="btn" onclick="alert('Troque pelo seu link do Tally: https://tally.so/r/SEU-LINK')">VOTAR NO FUNCIONÁRIO</button></div><button class="btn2" onclick="ir(1)">Voltar ao início</button></div>
+
+</div>
+
+<div class="lib" onclick="popup('🤟 Tradução em Libras: Use HandTalk plugin https://plugin.handtalk.me')">🤟 Libras</div>
+<div class="pop" id="pop" onclick="this.style.display='none'"><div class="popbox" id="popbox"></div></div>
+
+<script>
+function ir(n){document.querySelectorAll('.tela').forEach(t=>t.classList.remove('ativa'));document.getElementById('t'+n).classList.add('ativa');document.getElementById('num').innerText=n+' / 20';document.getElementById('progress').style.width=(n*5)+'%';window.scrollTo(0,0)}
+function popup(txt){document.getElementById('popbox').innerText=txt;document.getElementById('pop').style.display='flex'}
+function libOk(el){document.getElementById('f12').innerHTML="<div class='card ok'>+10 PONTOS! Luan atendeu em Libras! Cliente feliz 🤟</div>";el.style.borderColor='#10b981'}
+function libErr(el){document.getElementById('f12').innerHTML="<div class='card erro'>0 pontos - Carlos não sabe Libras</div>";el.style.borderColor='#ef4444'}
+</script>
+</body>
+</html>
