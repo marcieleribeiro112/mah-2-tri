@@ -1,102 +1,222 @@
-<!-- COLE ESTE CÓDIGO NA PARTE DO JOGO DO SEU HTML -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profissional Nota 10</title>
 
-<section class="tela" id="jogoTela">
-  <div class="container">
-    <h2>🎮 Um Dia no Escritório</h2>
-    <p>Organize documentos, atenda clientes e conclua seu expediente antes do tempo acabar!</p>
-
-    <div style="background:#102b42;padding:20px;border-radius:20px;margin:20px auto;max-width:900px">
-      <p>
-        📄 Documentos: <b id="docs">0/4</b> |
-        🤝 Clientes: <b id="clientes">0/2</b> |
-        ⭐ Pontos: <b id="score">0</b> |
-        ⏱️ Tempo: <b id="tempo">90</b>s
-      </p>
-
-      <canvas id="game" width="800" height="480"
-        style="width:100%;height:auto;background:#eaf2e8;border-radius:12px;display:block;margin:20px auto;touch-action:none">
-      </canvas>
-
-      <p id="mensagem">Clique em iniciar para começar!</p>
-
-      <button class="btn" onclick="iniciarJogo()">▶ INICIAR JOGO</button>
-      <button class="btn" onclick="mostrarTela('menuTela')">⬅ VOLTAR AO MENU</button>
-
-      <div style="margin-top:15px">
-        <button class="btn" onpointerdown="teclas.cima=true" onpointerup="teclas.cima=false" onpointerleave="teclas.cima=false">▲</button><br>
-        <button class="btn" onpointerdown="teclas.esquerda=true" onpointerup="teclas.esquerda=false" onpointerleave="teclas.esquerda=false">◀</button>
-        <button class="btn" onpointerdown="teclas.baixo=true" onpointerup="teclas.baixo=false" onpointerleave="teclas.baixo=false">▼</button>
-        <button class="btn" onpointerdown="teclas.direita=true" onpointerup="teclas.direita=false" onpointerleave="teclas.direita=false">▶</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-
-let jogador, documentos, clientesJogo, obstaculos, pontosJogo;
-let tempoJogo, documentosFeitos, clientesAtendidos, jogoAtivo;
-let teclas = { cima:false, baixo:false, esquerda:false, direita:false };
-let loopJogo, ultimoTempo;
-
-function iniciarJogo() {
-  cancelAnimationFrame(loopJogo);
-
-  jogador = { x:70, y:240, tamanho:18, velocidade:3 };
-  documentos = [
-    {x:170,y:110,feito:false},
-    {x:380,y:160,feito:false},
-    {x:650,y:100,feito:false},
-    {x:550,y:380,feito:false}
-  ];
-  clientesJogo = [
-    {x:280,y:300,feito:false},
-    {x:710,y:300,feito:false}
-  ];
-  obstaculos = [
-    {x:240,y:170,w:70,h:50},
-    {x:440,y:280,w:90,h:45},
-    {x:110,y:350,w:65,h:45}
-  ];
-
-  pontosJogo = 0;
-  tempoJogo = 90;
-  documentosFeitos = 0;
-  clientesAtendidos = 0;
-  jogoAtivo = true;
-  ultimoTempo = performance.now();
-
-  document.getElementById("mensagem").textContent =
-    "Missão iniciada! Recolha os documentos e aproxime-se dos clientes.";
-  loopJogo = requestAnimationFrame(atualizarJogo);
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
 }
 
-function atualizarJogo(agora) {
-  if (!jogoAtivo) return;
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#07152e,#123b75,#0b6fa4);
+    color:white;
+}
 
-  const delta = Math.min((agora-ultimoTempo)/1000,0.05);
-  ultimoTempo = agora;
-  tempoJogo -= delta;
+button{cursor:pointer;border:none}
 
-  if (teclas.cima) jogador.y -= jogador.velocidade;
-  if (teclas.baixo) jogador.y += jogador.velocidade;
-  if (teclas.esquerda) jogador.x -= jogador.velocidade;
-  if (teclas.direita) jogador.x += jogador.velocidade;
+.tela{
+    display:none;
+    min-height:100vh;
+    padding:30px 20px;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
 
-  jogador.x = Math.max(15,Math.min(canvas.width-15,jogador.x));
-  jogador.y = Math.max(15,Math.min(canvas.height-15,jogador.y));
+.tela.ativa{display:flex}
 
-  documentos.forEach(d => {
-    if (!d.feito && Math.hypot(jogador.x-d.x,jogador.y-d.y)<28) {
-      d.feito = true;
-      documentosFeitos++;
-      pontosJogo += 100;
-      document.getElementById("mensagem").textContent =
-        "📄 Documento organizado! +100 pontos.";
-    }
-  });
+.container{
+    width:100%;
+    max-width:1000px;
+}
 
-  clientesJogo.forEach(c => {
-    if (!c.feito && Math.h
+h1{font-size:50px;margin-bottom:20px}
+h2{font-size:34px;margin-bottom:20px}
+h3{margin-bottom:15px}
+p{font-size:18px;line-height:1.6}
+
+.btn{
+    background:#ffd21c;
+    color:#111827;
+    padding:15px 28px;
+    border-radius:14px;
+    font-size:18px;
+    font-weight:bold;
+    margin:8px;
+    transition:.2s;
+}
+
+.btn:hover{transform:scale(1.05)}
+
+.avatar-principal{font-size:100px;margin-bottom:15px}
+
+.pontuacao{
+    position:fixed;
+    top:15px;
+    right:15px;
+    z-index:100;
+    background:#ffd21c;
+    color:#111827;
+    padding:12px 20px;
+    border-radius:30px;
+    font-weight:bold;
+}
+
+.avatares{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin:30px 0;
+}
+
+.avatar{
+    background:white;
+    color:#111827;
+    padding:25px;
+    border-radius:20px;
+    transition:.2s;
+}
+
+.avatar:hover{transform:translateY(-5px)}
+.avatar.selecionado{outline:5px solid #ffd21c}
+
+.avatar .emoji{
+    font-size:60px;
+    display:block;
+    margin-bottom:10px;
+}
+
+.menu{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin:30px 0;
+}
+
+.card{
+    background:rgba(255,255,255,.12);
+    padding:15px;
+    border-radius:20px;
+    backdrop-filter:blur(8px);
+}
+
+.card button{
+    width:100%;
+    padding:25px;
+    border-radius:15px;
+    font-size:18px;
+    font-weight:bold;
+    background:white;
+    color:#111827;
+}
+
+.icone{
+    display:block;
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+.fala{
+    background:white;
+    color:#111827;
+    padding:20px;
+    border-radius:18px;
+    margin:20px auto;
+    max-width:750px;
+    font-size:18px;
+}
+
+.opcoes{
+    display:grid;
+    gap:12px;
+    margin:25px auto;
+    max-width:750px;
+}
+
+.opcao{
+    background:white;
+    color:#111827;
+    padding:18px;
+    border-radius:12px;
+    text-align:left;
+    font-size:17px;
+}
+
+.opcao:hover{background:#ffd21c}
+
+.feedback{
+    display:none;
+    padding:20px;
+    border-radius:15px;
+    background:rgba(255,255,255,.15);
+    margin:20px;
+}
+
+.progresso{
+    width:100%;
+    height:14px;
+    background:rgba(255,255,255,.2);
+    border-radius:20px;
+    overflow:hidden;
+    margin:20px 0;
+}
+
+.barra{
+    width:0%;
+    height:100%;
+    background:#ffd21c;
+    transition:.5s;
+}
+
+/* VÍDEOS */
+.video-box{
+    background:rgba(255,255,255,.12);
+    padding:25px;
+    border-radius:22px;
+    margin:25px 0;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.video{
+    position:relative;
+    width:100%;
+    max-width:800px;
+    height:380px;
+    margin:20px auto;
+    overflow:hidden;
+    border-radius:20px;
+    background:linear-gradient(135deg,#111827,#243b64);
+    border:3px solid rgba(255,255,255,.2);
+}
+
+.cenario{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.chao{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:80px;
+    background:#263238;
+}
+
+.personagem{
+    position:absolute;
+    bottom:75px;
+    font-size:80px;
+    transition:all 1s ease;
+}
+
+.personagem.um{left:15%}
+.personagem.d
