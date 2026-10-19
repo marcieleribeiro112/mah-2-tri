@@ -6,191 +6,474 @@
 <title>Profissional Nota 10</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+:root{--azul:#102b50;--dourado:#e8bd58;--vidro:rgba(255,255,255,.1)}
+body{min-height:100vh;color:white;background:radial-gradient(ellipse at top left,#245784,transparent 45%),linear-gradient(135deg,#071426,#102b50 60%,#123e61)}
+button{cursor:pointer;border:0}
+.tela{display:none;min-height:100vh;padding:35px 18px;justify-content:center;align-items:center;text-align:center}
+.tela.ativa{display:flex}
+.container{width:100%;max-width:1050px}
+h1{font-size:clamp(2.3rem,6vw,4.5rem);margin-bottom:20px}
+h2{font-size:clamp(1.8rem,4vw,2.7rem);margin-bottom:20px}
+p{font-size:18px;line-height:1.7}
+.btn{background:linear-gradient(135deg,#ffe6a0,#e8bd58);color:#17263b;border-radius:12px;padding:14px 23px;font-weight:bold;margin:8px;transition:.2s}
+.btn:hover{transform:translateY(-3px)}
+.card{background:var(--vidro);border:1px solid #ffffff30;border-radius:20px;padding:22px;margin:15px 0}
+.pontuacao{position:fixed;top:12px;right:12px;z-index:10;background:white;color:#102b50;padding:12px 18px;border-radius:12px;font-weight:bold}
+.avatares,.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:25px 0}
+.avatar{background:white;color:#102b50;border:3px solid transparent;border-radius:16px;padding:20px;font-weight:bold}
+.avatar .emoji{display:block;font-size:55px;margin-bottom:10px}
+.avatar.selecionado{border-color:var(--dourado)}
+.menu{grid-template-columns:repeat(2,1fr)}
+.menu button{width:100%;height:100%;padding:25px;border-radius:14px;background:white;color:#102b50;font-size:17px;font-weight:bold}
+.icone{display:block;font-size:38px;margin-bottom:10px}
+.fala{background:white;color:#17263b;padding:20px;border-radius:15px;margin:20px auto;max-width:750px;font-size:18px}
+.opcoes{display:grid;gap:12px;max-width:750px;margin:20px auto}
+.opcao{padding:16px;border-radius:12px;background:white;color:#102b50;text-align:left;font-size:16px}
+.opcao:hover{background:#ffe6a0}
+.feedback{display:none;padding:16px;background:#ffffff20;border-radius:12px;margin:15px}
+.progresso{height:12px;background:#ffffff30;border-radius:20px;overflow:hidden;margin:20px 0}
+.barra{height:100%;width:0;background:var(--dourado);transition:.3s}
+.video-box{padding:20px;background:var(--vidro);border-radius:20px;margin:20px 0}
+.video{height:350px;max-width:800px;margin:20px auto;position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(#86b8d8 0 65%,#6b9273 65%)}
+.cenario{position:absolute;inset:0}
+.chao{position:absolute;bottom:0;width:100%;height:75px;background:#526b5b}
+.personagem{position:absolute;bottom:70px;font-size:70px;transition:1s}
+.personagem.um{left:18%}.personagem.dois{right:18%}
+.fala-video{position:absolute;top:20px;left:10%;width:80%;padding:15px;background:white;color:#102b50;border-radius:15px;font-weight:bold;opacity:0;transition:.3s}
+.fala-video.mostrar{opacity:1}
+/* Esconde o título sobreposto, sem esconder as falas */
+.video .titulo-video{display:none!important}
+.video-controles{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.controle{padding:10px 16px;border-radius:10px;background:var(--dourado);font-weight:bold}
+.quiz{padding:22px;background:var(--vidro);border-radius:16px;margin:20px 0}
+.quiz button{display:block;width:100%;padding:15px;margin:8px 0;border-radius:10px;background:white;color:#102b50}
+.checklist{text-align:left;background:var(--vidro);padding:20px;border-radius:16px}
+.check-item{background:white;color:#102b50;padding:14px;margin:8px 0;border-radius:10px}
+.certificado{background:white;color:#102b50;padding:35px;border:8px solid var(--dourado);border-radius:16px;max-width:750px;margin:auto}
+input{padding:13px;border-radius:9px;border:0;margin:10px;max-width:100%}
+.jogo-painel{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}
+.jogo-estatistica{background:var(--vidro);padding:12px;border-radius:10px}
+.jogo-estatistica strong{display:block;color:#ffe6a0;font-size:22px}
+.jogo-area{background:white;padding:8px;border-radius:14px}
+#corridaCanvas{display:block;width:100%;height:auto;touch-action:none}
+.controles-move{display:grid;grid-template-columns:repeat(3,55px);gap:8px;justify-content:center;margin:15px}
+.controles-move button{padding:14px;border-radius:10px;background:white;color:#102b50;font-size:20px;font-weight:bold}
+.jogo-mensagem{background:var(--vidro);padding:14px;border-radius:10px;margin:15px 0}
+@media(max-width:650px){
+.avatares{grid-template-columns:repeat(2,1fr)}
+.menu{grid-template-columns:1fr}
+.video{height:290px}
+.personagem{font-size:55px}
+.jogo-painel{grid-template-columns:repeat(2,1fr)}
+.certificado{padding:20px}
+}
+</style>
+</head>
+
+<body>
+<div class="pontuacao">⭐ Pontos: <span id="pontos">0</span></div>
+
+<section id="inicio" class="tela ativa">
+<div class="container card">
+<div style="font-size:85px">💼</div>
+<h1>Profissional<br>Nota 10</h1>
+<p>Aprenda a desenvolver habilidades profissionais, atender clientes, comunicar-se com respeito e trabalhar em equipe.</p>
+<button class="btn" onclick="mostrarTela('escolha')">COMEÇAR EXPERIÊNCIA →</button>
+</div>
+</section>
+
+<section id="escolha" class="tela">
+<div class="container">
+<h2>Escolha seu avatar</h2>
+<p>Selecione o personagem que representará você nesta experiência.</p>
+<div class="avatares">
+<button class="avatar selecionado" onclick="selecionarAvatar(this,'👩‍💼')"><span class="emoji">👩‍💼</span>Profissional</button>
+<button class="avatar" onclick="selecionarAvatar(this,'👨‍💼')"><span class="emoji">👨‍💼</span>Profissional</button>
+<button class="avatar" onclick="selecionarAvatar(this,'🧑‍💻')"><span class="emoji">🧑‍💻</span>Tecnologia</button>
+<button class="avatar" onclick="selecionarAvatar(this,'👩‍🔧')"><span class="emoji">👩‍🔧</span>Técnica</button>
+<button class="avatar" onclick="selecionarAvatar(this,'👨‍🏫')"><span class="emoji">👨‍🏫</span>Instrutor</button>
+<button class="avatar" onclick="selecionarAvatar(this,'🧑‍🚀')"><span class="emoji">🧑‍🚀</span>Inovador</button>
+</div>
+<div id="avatarEscolhido" style="font-size:55px">👩‍💼</div>
+<button class="btn" onclick="mostrarTela('menu')">CONTINUAR →</button>
+</div>
+</section>
+
+<section id="menu" class="tela">
+<div class="container">
+<h2>Central de aprendizagem</h2>
+<p>Escolha uma atividade para começar.</p>
+<div class="menu">
+<div class="card"><button onclick="mostrarTela('comunicacao')"><span class="icone">💬</span>Comunicação profissional</button></div>
+<div class="card"><button onclick="mostrarTela('videos')"><span class="icone">🎬</span>Cenas interativas</button></div>
+<div class="card"><button onclick="iniciarQuiz()"><span class="icone">🧠</span>Quiz profissional</button></div>
+<div class="card"><button onclick="abrirJogoProfissional()"><span class="icone">🕹️</span>Jogo do escritório</button></div>
+<div class="card"><button onclick="mostrarTela('checklistTela')"><span class="icone">✅</span>Checklist de habilidades</button></div>
+<div class="card"><button onclick="mostrarTela('certificadoTela')"><span class="icone">🏆</span>Certificado</button></div>
+</div>
+<button class="btn" onclick="mostrarTela('inicio')">VOLTAR AO INÍCIO</button>
+</div>
+</section>
+
+<section id="comunicacao" class="tela">
+<div class="container">
+<h2>💬 Comunicação profissional</h2>
+<div class="card">
+<h3>Como agir no ambiente de trabalho?</h3>
+<p>Uma boa comunicação exige clareza, respeito, escuta ativa e atenção à linguagem verbal e não verbal.</p>
+</div>
+<div class="card">
+<h3>👂 Escuta ativa</h3>
+<p>Ouça a pessoa até o fim, evite interromper e pergunte quando não entender algo.</p>
+</div>
+<div class="card">
+<h3>🤝 Respeito e empatia</h3>
+<p>Trate colegas e clientes com educação, respeitando diferenças e opiniões.</p>
+</div>
+<div class="card">
+<h3>📢 Clareza</h3>
+<p>Explique informações de maneira objetiva e confirme se a outra pessoa compreendeu.</p>
+</div>
+<div class="card">
+<h3>🌍 Interpretação de línguas</h3>
+<p>Se houver dificuldade de idioma, fale devagar, use frases simples e, quando disponível, recorra a um intérprete ou ferramenta de tradução.</p>
+</div>
+<button class="btn" onclick="mostrarTela('menu')">VOLTAR AO MENU</button>
+</div>
+</section>
+
+<section id="videos" class="tela">
+<div class="container">
+<h2>🎬 Cenas interativas</h2>
+<p>Observe as falas e escolha como o profissional deve agir.</p>
+
+<div class="video-box">
+<h3>Cena 1 — Atendimento ao cliente</h3>
+<div class="video">
+<div class="cenario">
+<div class="chao"></div>
+<div class="personagem um" id="p1">👩‍💼</div>
+<div class="personagem dois" id="p2">🧑</div>
+<div class="fala-video mostrar" id="fala1">Cliente: Olá, preciso de ajuda, por favor.</div>
+</div>
+</div>
+<div class="video-controles">
+<button class="controle" onclick="falaCena(1)">▶ Fala 1</button>
+<button class="controle" onclick="falaCena(2)">▶ Fala 2</button>
+<button class="controle" onclick="falaCena(3)">▶ Fala 3</button>
+</div>
+<div class="fala" id="textoCena">Cliente: Olá, preciso de ajuda, por favor.</div>
+</div>
+
+<div class="video-box">
+<h3>Qual seria a melhor atitude?</h3>
+<div class="opcoes">
+<button class="opcao" onclick="responderCena(false,this)">Ignorar o cliente porque está ocupado.</button>
+<button class="opcao" onclick="responderCena(true,this)">Cumprimentar, ouvir e perguntar como pode ajudar.</button>
+<button class="opcao" onclick="responderCena(false,this)">Responder de forma grosseira.</button>
+</div>
+<div id="feedbackCena" class="feedback"></div>
+</div>
+<button class="btn" onclick="mostrarTela('menu')">VOLTAR AO MENU</button>
+</div>
+</section>
+
+<section id="quizTela" class="tela">
+<div class="container">
+<h2>🧠 Quiz profissional</h2>
+<p id="quizNumero">Questão 1</p>
+<div class="progresso"><div id="quizBarra" class="barra"></div></div>
+<div class="quiz">
+<h3 id="pergunta">Pergunta</h3>
+<div id="respostas"></div>
+<div id="quizFeedback" class="feedback"></div>
+</div>
+<button id="proximaPergunta" class="btn" onclick="proxima()" style="display:none">PRÓXIMA →</button>
+<button class="btn" onclick="mostrarTela('menu')">SAIR DO QUIZ</button>
+</div>
+</section>
+
+<section id="jogoTela" class="tela">
+<div class="container">
+<h2>🕹️ Um dia no escritório</h2>
+<p>Use as setas ou os botões para movimentar seu personagem. Recolha os documentos e atenda os clientes.</p>
+<div class="jogo-painel">
+<div class="jogo-estatistica">Documentos<strong id="corridaItens">0/4</strong></div>
+<div class="jogo-estatistica">Clientes<strong id="corridaClientes">0/2</strong></div>
+<div class="jogo-estatistica">Pontos<strong id="corridaPontos">0</strong></div>
+<div class="jogo-estatistica">Tempo<strong id="corridaTempo">90</strong></div>
+<div class="jogo-estatistica">Vidas<strong id="corridaVidas">3/3</strong></div>
+</div>
+<div class="jogo-area">
+<canvas id="corridaCanvas" width="800" height="470"></canvas>
+</div>
+<div class="controles-move">
+<span></span><button data-move="up">↑</button><span></span>
+<button data-move="left">←</button><button data-move="down">↓</button><button data-move="right">→</button>
+</div>
+<div id="corridaMensagem" class="jogo-mensagem">Organize 4 documentos e atenda 2 clientes. Clique em iniciar para começar!</div>
+<button class="btn" id="corridaIniciar" onclick="iniciarCorrida()">▶ INICIAR EXPEDIENTE</button>
+<button class="btn" onclick="mostrarTela('menu')">VOLTAR AO MENU</button>
+</div>
+</section>
+
+<section id="checklistTela" class="tela">
+<div class="container">
+<h2>✅ Checklist profissional</h2>
+<p>Marque as habilidades que você considera importantes.</p>
+<div class="checklist">
+<label class="check-item"><input type="checkbox" onchange="atualizarChecklist()">Comunico-me com clareza.</label>
+<label class="check-item"><input type="checkbox" onchange="atualizarChecklist()">Respeito colegas e clientes.</label>
+<label class="check-item"><input type="checkbox" onchange="atualizarChecklist()">Ouço com atenção.</label>
+<label class="check-item"><input type="checkbox" onchange="atualizarChecklist()">Sou pontual e responsável.</label>
+<label class="check-item"><input type="checkbox" onchange="atualizarChecklist()">Organizo tarefas e documentos.</label>
+<label class="check-item"><input type="checkbox" onchange="atualizarChecklist()">Sei pedir ajuda quando necessário.</label>
+</div>
+<div class="progresso"><div id="barraChecklist" class="barra"></div></div>
+<p id="porcentagem">0% concluído</p>
+<button class="btn" onclick="mostrarTela('menu')">VOLTAR AO MENU</button>
+</div>
+</section>
+
+<section id="certificadoTela" class="tela">
+<div class="container">
+<div class="certificado">
+<div style="font-size:55px">🏆</div>
+<h1>Certificado</h1>
+<h2>Profissional Nota 10</h2>
+<p>Certificamos que</p>
+<input id="nomeCertificado" placeholder="Digite seu nome">
+<p>participou da experiência interativa sobre habilidades profissionais.</p>
+<p style="margin-top:20px">Pontuação: <strong id="pontosCertificado">0</strong></p>
+</div>
+<button class="btn" onclick="atualizarCertificado()">ATUALIZAR CERTIFICADO</button>
+<button class="btn" onclick="window.print()">IMPRIMIR / SALVAR PDF</button>
+<button class="btn" onclick="mostrarTela('menu')">VOLTAR AO MENU</button>
+</div>
+</section>
+
+<script>
+let pontos=0;
+let avatar='👩‍💼';
+
+function atualizarPontos(){
+ document.getElementById('pontos').textContent=pontos;
+ document.getElementById('pontosCertificado').textContent=pontos;
+ try{localStorage.setItem('profissionalPontos',pontos)}catch(e){}
+}
+function mostrarTela(id){
+ document.querySelectorAll('.tela').forEach(t=>t.classList.remove('ativa'));
+ document.getElementById(id).classList.add('ativa');
+ if(id==='jogoTela')desenharCorrida();
+}
+function selecionarAvatar(botao,emoji){
+ document.querySelectorAll('.avatar').forEach(a=>a.classList.remove('selecionado'));
+ botao.classList.add('selecionado');
+ avatar=emoji;
+ document.getElementById('avatarEscolhido').textContent=emoji;
+}
+function falaCena(n){
+ const falas={
+ 1:'Cliente: Olá, preciso de ajuda, por favor.',
+ 2:'Profissional: Claro! Seja bem-vindo. Como posso ajudar?',
+ 3:'Cliente: Obrigado pela atenção!'
+ };
+ document.getElementById('fala1').textContent=falas[n];
+ document.getElementById('textoCena').textContent=falas[n];
+ document.getElementById('p1').textContent=avatar;
+}
+function responderCena(correta,botao){
+ document.querySelectorAll('#videos .opcao').forEach(b=>b.disabled=true);
+ const f=document.getElementById('feedbackCena');
+ f.style.display='block';
+ if(correta){
+  pontos+=10;atualizarPontos();
+  f.textContent='✅ Correto! Ouvir o cliente e oferecer ajuda demonstra respeito e profissionalismo. +10 pontos.';
+ }else{
+  f.textContent='❌ Tente novamente na próxima atividade. O ideal é ouvir com atenção e responder com respeito.';
+ }
+}
+const questoes=[
+ {p:'Um cliente chega com uma dúvida. O que fazer?',r:['Ignorá-lo.','Ouvir com atenção e oferecer ajuda.','Mandá-lo procurar outra pessoa.'],c:1,e:'A escuta ativa e a educação são fundamentais no atendimento.'},
+ {p:'O que demonstra responsabilidade?',r:['Chegar no horário e cumprir tarefas.','Deixar tudo para os colegas.','Ignorar orientações.'],c:0,e:'Responsabilidade envolve pontualidade e compromisso.'},
+ {p:'Como agir diante de um conflito?',r:['Gritar para vencer a discussão.','Espalhar o problema.','Conversar com respeito e buscar uma solução.'],c:2,e:'O diálogo respeitoso ajuda a resolver conflitos.'},
+ {p:'Se você não entendeu uma instrução, deve:',r:['Fingir que entendeu.','Pedir esclarecimentos.','Fazer qualquer coisa.'],c:1,e:'Perguntar evita erros e demonstra iniciativa.'},
+ {p:'Qual atitude contribui para o trabalho em equipe?',r:['Cooperar e respeitar diferenças.','Competir o tempo todo.','Recusar toda ajuda.'],c:0,e:'Cooperação e respeito ajudam toda a equipe.'},
+ {p:'Uma informação de cliente deve ser:',r:['Compartilhada com todos.','Publicada nas redes sociais.','Tratada com responsabilidade e privacidade.'],c:2,e:'Informações pessoais devem ser protegidas.'}
+];
+let indice=0,respondida=false;
+function iniciarQuiz(){indice=0;mostrarPergunta();mostrarTela('quizTela')}
+function mostrarPergunta(){
+ respondida=false;
+ const q=questoes[indice];
+ document.getElementById('quizNumero').textContent=`Questão ${indice+1} de ${questoes.length}`;
+ document.getElementById('quizBarra').style.width=(indice/questoes.length*100)+'%';
+ document.getElementById('pergunta').textContent=q.p;
+ document.getElementById('quizFeedback').style.display='none';
+ document.getElementById('proximaPergunta').style.display='none';
+ const area=document.getElementById('respostas');area.innerHTML='';
+ q.r.forEach((r,i)=>{
+  const b=document.createElement('button');b.textContent=r;
+  b.onclick=()=>responderQuiz(i,b);area.appendChild(b);
+ });
+}
+function responderQuiz(escolha,botao){
+ if(respondida)return;respondida=true;
+ const q=questoes[indice];
+ document.querySelectorAll('#respostas button').forEach((b,i)=>{
+  b.disabled=true;
+  if(i===q.c)b.style.background='#86efac';
+ });
+ const f=document.getElementById('quizFeedback');f.style.display='block';
+ if(escolha===q.c){pontos+=10;atualizarPontos();f.textContent='✅ Correto! '+q.e+' +10 pontos.'}
+ else{botao.style.background='#fca5a5';f.textContent='❌ '+q.e}
+ document.getElementById('quizBarra').style.width=((indice+1)/questoes.length*100)+'%';
+ document.getElementById('proximaPergunta').style.display='inline-block';
+ document.getElementById('proximaPergunta').textContent=indice===questoes.length-1?'VER RESULTADO':'PRÓXIMA →';
+}
+function proxima(){
+ if(indice<questoes.length-1){indice++;mostrarPergunta()}
+ else{
+  document.getElementById('pergunta').textContent='🏆 Quiz concluído!';
+  document.getElementById('respostas').innerHTML=`<p>Você terminou as ${questoes.length} questões. Continue praticando suas habilidades profissionais!</p>`;
+  document.getElementById('quizFeedback').style.display='block';
+  document.getElementById('quizFeedback').textContent='Sua pontuação total é '+pontos+' pontos.';
+  document.getElementById('proximaPergunta').style.display='none';
+ }
+}
+function atualizarChecklist(){
+ const caixas=[...document.querySelectorAll('.check-item input')];
+ const marcados=caixas.filter(c=>c.checked).length;
+ const porcentagem=Math.round(marcados/caixas.length*100);
+ document.getElementById('barraChecklist').style.width=porcentagem+'%';
+ document.getElementById('porcentagem').textContent=porcentagem+'% concluído';
+}
+function atualizarCertificado(){
+ const nome=document.getElementById('nomeCertificado').value.trim();
+ if(!nome){alert('Digite seu nome para preencher o certificado.');return}
+ document.getElementById('pontosCertificado').textContent=pontos;
+ alert('Certificado atualizado para '+nome+'!');
 }
 
-:root {
-    --navy-deep: #071426;
-    --navy: #102b50;
-    --blue: #174b78;
-    --gold: #e8bd58;
-    --gold-light: #ffe6a0;
-    --text-light: #f5f7fb;
-    --glass: rgba(255,255,255,.085);
-    --glass-border: rgba(255,255,255,.17);
+/* JOGO DO ESCRITÓRIO */
+const canvas=document.getElementById('corridaCanvas');
+const ctx=canvas.getContext('2d');
+let jogo={ativo:false,x:70,y:90,docs:[],clientes:[],obstaculos:[],coletados:0,atendidos:0,pontos:0,vidas:3,tempo:90,ultimo:0,teclas:{},animacao:null,finalizado:false,ultimoDano:0};
+function prepararJogo(){
+ jogo.ativo=false;jogo.x=70;jogo.y=90;jogo.coletados=0;jogo.atendidos=0;jogo.pontos=0;jogo.vidas=3;jogo.tempo=90;jogo.finalizado=false;jogo.teclas={};jogo.ultimoDano=0;
+ jogo.docs=[{x:165,y:110,feito:false},{x:360,y:110,feito:false},{x:650,y:120,feito:false},{x:575,y:365,feito:false}];
+ jogo.clientes=[{x:275,y:245,feito:false},{x:710,y:285,feito:false}];
+ jogo.obstaculos=[{x:245,y:145},{x:465,y:245},{x:120,y:330},{x:440,y:385}];
+ painelJogo();desenharJogo();
+ document.getElementById('corridaMensagem').textContent='Organize 4 documentos e atenda 2 clientes antes que o tempo termine.';
 }
-
-html {
-    scroll-behavior: smooth;
+function iniciarCorrida(){
+ if(jogo.animacao)cancelAnimationFrame(jogo.animacao);
+ prepararJogo();jogo.ativo=true;jogo.ultimo=performance.now();
+ document.getElementById('corridaIniciar').textContent='↻ RECOMEÇAR';
+ jogo.animacao=requestAnimationFrame(cicloJogo);
 }
-
-body {
-    min-height: 100vh;
-    color: white;
-    background:
-        radial-gradient(ellipse at 15% 8%, rgba(55,126,174,.26), transparent 34%),
-        radial-gradient(ellipse at 88% 80%, rgba(232,189,88,.10), transparent 30%),
-        linear-gradient(135deg, var(--navy-deep), #102b50 55%, #123e61);
-    background-attachment: fixed;
-    letter-spacing: .1px;
+function painelJogo(){
+ document.getElementById('corridaItens').textContent=jogo.coletados+'/4';
+ document.getElementById('corridaClientes').textContent=jogo.atendidos+'/2';
+ document.getElementById('corridaPontos').textContent=jogo.pontos;
+ document.getElementById('corridaTempo').textContent=Math.max(0,Math.ceil(jogo.tempo));
+ document.getElementById('corridaVidas').textContent=jogo.vidas+'/3';
 }
-
-button {
-    cursor: pointer;
-    border: none;
+function cicloJogo(agora){
+ if(!jogo.ativo)return;
+ const dt=Math.min((agora-jogo.ultimo)/1000,.04);jogo.ultimo=agora;jogo.tempo-=dt;
+ const vel=190*dt;
+ if(jogo.teclas.up)jogo.y-=vel;
+ if(jogo.teclas.down)jogo.y+=vel;
+ if(jogo.teclas.left)jogo.x-=vel;
+ if(jogo.teclas.right)jogo.x+=vel;
+ jogo.x=Math.max(18,Math.min(782,jogo.x));jogo.y=Math.max(18,Math.min(452,jogo.y));
+ for(const d of jogo.docs){
+  if(!d.feito&&Math.hypot(jogo.x-d.x,jogo.y-d.y)<32){
+   d.feito=true;jogo.coletados++;jogo.pontos+=100;
+   document.getElementById('corridaMensagem').textContent='📄 Documento organizado! +100 pontos.';
+  }
+ }
+ for(const cl of jogo.clientes){
+  if(!cl.feito&&Math.hypot(jogo.x-cl.x,jogo.y-cl.y)<35){
+   cl.feito=true;jogo.atendidos++;jogo.pontos+=200;
+   document.getElementById('corridaMensagem').textContent='🤝 Cliente atendido com profissionalismo! +200 pontos.';
+  }
+ }
+ for(const o of jogo.obstaculos){
+  if(Math.hypot(jogo.x-o.x,jogo.y-o.y)<30&&agora-jogo.ultimoDano>1300){
+   jogo.ultimoDano=agora;jogo.vidas--;jogo.pontos=Math.max(0,jogo.pontos-50);
+   document.getElementById('corridaMensagem').textContent='⚠️ Cuidado com os obstáculos! -50 pontos.';
+   if(jogo.vidas<=0){encerrarJogo(false);return}
+  }
+ }
+ if(jogo.coletados===4&&jogo.atendidos===2){encerrarJogo(true);return}
+ if(jogo.tempo<=0){encerrarJogo(false);return}
+ painelJogo();desenharJogo();jogo.animacao=requestAnimationFrame(cicloJogo);
 }
-
-.tela {
-    display: none;
-    min-height: 100vh;
-    padding: clamp(24px, 5vw, 58px) 20px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+function desenharJogo(){
+ if(!ctx)return;
+ ctx.clearRect(0,0,800,470);
+ ctx.fillStyle='#eaf2e8';ctx.fillRect(0,0,800,470);
+ ctx.strokeStyle='#d2dfd3';ctx.lineWidth=1;
+ for(let x=0;x<800;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,470);ctx.stroke()}
+ for(let y=0;y<470;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(800,y);ctx.stroke()}
+ const mesa=(x,y,w,h,n)=>{
+  ctx.fillStyle='#b8cdbf';ctx.strokeStyle='#6f9182';ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(x,y,w,h,8);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#355849';ctx.font='12px Arial';ctx.textAlign='center';ctx.fillText(n,x+w/2,y+h/2+4);
+ };
+ mesa(15,18,145,45,'RECEPÇÃO');mesa(195,18,120,50,'MESA 1');mesa(390,18,120,50,'MESA 2');mesa(610,18,160,50,'ARQUIVO');mesa(25,405,145,45,'IMPRESSORA');mesa(300,405,120,45,'MESA 3');mesa(640,405,120,45,'CAFÉ');
+ jogo.docs.forEach(d=>{if(!d.feito){ctx.font='27px Arial';ctx.textAlign='center';ctx.fillText('📄',d.x,d.y);ctx.font='10px Arial';ctx.fillStyle='#234';ctx.fillText('ORGANIZAR',d.x,d.y+20)}});
+ jogo.clientes.forEach(c=>{ctx.font='30px Arial';ctx.textAlign='center';ctx.fillText(c.feito?'✅':'🧑‍💼',c.x,c.y);if(!c.feito){ctx.font='10px Arial';ctx.fillStyle='#234';ctx.fillText('ATENDER',c.x,c.y+22)}});
+ jogo.obstaculos.forEach(o=>{ctx.font='27px Arial';ctx.textAlign='center';ctx.fillText('📦',o.x,o.y)});
+ ctx.fillStyle='#174a73';ctx.beginPath();ctx.arc(jogo.x,jogo.y,16,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#f4c49a';ctx.beginPath();ctx.arc(jogo.x,jogo.y-4,8,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#fff';ctx.fillRect(jogo.x-9,jogo.y+5,18,10);
+ ctx.fillStyle='#174a73';ctx.fillRect(jogo.x-8,jogo.y+14,5,6);ctx.fillRect(jogo.x+3,jogo.y+14,5,6);
+ if(!jogo.ativo&&!jogo.finalizado){
+  ctx.fillStyle='rgba(13,32,52,.78)';ctx.fillRect(0,0,800,470);
+  ctx.fillStyle='white';ctx.textAlign='center';ctx.font='bold 30px Arial';ctx.fillText('UM DIA NO ESCRITÓRIO',400,210);
+  ctx.font='17px Arial';ctx.fillText('Organize documentos e atenda clientes',400,245);
+  ctx.font='14px Arial';ctx.fillText('Clique em INICIAR EXPEDIENTE para jogar',400,275);
+ }
 }
-
-.tela.ativa {
-    display: flex;
+function encerrarJogo(vitoria){
+ jogo.ativo=false;jogo.finalizado=true;
+ if(jogo.animacao)cancelAnimationFrame(jogo.animacao);
+ if(vitoria){
+  jogo.pontos+=Math.max(0,Math.ceil(jogo.tempo))*3;
+  pontos+=jogo.pontos;atualizarPontos();
+  document.getElementById('corridaMensagem').textContent='🏆 EXPEDIENTE CONCLUÍDO! Você atendeu todos os clientes e organizou os documentos. Total: '+jogo.pontos+' pontos!';
+ }else{
+  document.getElementById('corridaMensagem').textContent='⏰ Expediente encerrado! Documentos: '+jogo.coletados+'/4; clientes: '+jogo.atendidos+'/2. Tente novamente!';
+ }
+ document.getElementById('corridaIniciar').textContent='↻ JOGAR NOVAMENTE';
+ painelJogo();desenharJogo();
 }
-
-.container {
-    width: 100%;
-    max-width: 1080px;
+function abrirJogoProfissional(){prepararJogo();mostrarTela('jogoTela')}
+function movimento(tecla,ligado){
+ const mapa={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
+ if(mapa[tecla]){jogo.teclas[mapa[tecla]]=ligado;return true}return false;
 }
-
-h1, h2, h3 {
-    letter-spacing: -.6px;
-}
-
-h1 {
-    font-size: clamp(2.8rem, 7vw, 5.2rem);
-    line-height: 1.04;
-    font-weight: 800;
-    margin-bottom: 20px;
-    text-shadow: 0 8px 32px rgba(0,0,0,.24);
-}
-
-h2 {
-    font-size: clamp(1.8rem, 4.2vw, 2.7rem);
-    line-height: 1.15;
-    margin-bottom: 20px;
-}
-
-h3 {
-    margin-bottom: 15px;
-}
-
-p {
-    font-size: 18px;
-    line-height: 1.75;
-}
-
-.btn {
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    color: #17263b;
-    border-radius: 12px;
-    padding: 15px 25px;
-    font-size: 15px;
-    letter-spacing: .55px;
-    font-weight: bold;
-    margin: 8px;
-    box-shadow: 0 8px 22px rgba(0,0,0,.16);
-    transition: transform .22s ease, box-shadow .22s ease;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 13px 28px rgba(0,0,0,.24);
-}
-
-button:focus-visible {
-    outline: 3px solid white;
-    outline-offset: 4px;
-}
-
-.avatar-principal {
-    font-size: 100px;
-    margin-bottom: 15px;
-}
-
-#inicio .container {
-    max-width: 820px;
-    padding: clamp(28px, 5vw, 58px);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.035));
-    box-shadow: 0 28px 75px rgba(0,0,0,.28);
-    backdrop-filter: blur(14px);
-}
-
-#inicio .avatar-principal {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 132px;
-    height: 132px;
-    border-radius: 34px;
-    font-size: 76px;
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.2);
-}
-
-#inicio p {
-    max-width: 620px;
-    margin: 22px auto;
-    color: #dbe7f4;
-    font-size: 20px;
-}
-
-.pontuacao {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 100;
-    background: white;
-    color: #132b49;
-    border-radius: 14px;
-    padding: 12px 17px;
-    font-weight: bold;
-    box-shadow: 0 8px 28px rgba(0,0,0,.2);
-}
-
-.avatares {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin: 30px 0;
-}
-
-.avatar {
-    background: white;
-    color: #111827;
-    padding: 25px;
-    border-radius: 18px;
-    border: 2px solid transparent;
-    box-shadow: 0 10px 25px rgba(0,0,0,.12);
-    transition: .2s;
-}
-
-.avatar:hover {
-    transform: translateY(-4px);
-}
-
-.avatar.selecionado {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(232,189,88,.22);
-}
-
-.avatar .emoji {
-    font-size: 60px;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.menu {
-    display: grid;
-    grid
+document.addEventListener('keydown',e=>{
+ if(document.getElementById('jogoTela').classList.contains('ativa')&&movimento(e.key,true))e.preventDefault();
+});
+document.addEventListener('keyup',e=>movimento(e.key,false));
+document.querySelectorAll('[data-move]').forEach(b=>{
+ const dir=b.dataset.move;
+ const down=e=>{e.preventDefault();jogo.teclas[dir]=true};
+ const up=e=>{e.preventDefault();jogo.teclas[dir]=false};
+ b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);
+ b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up);
+});
+try{
+ const salvo=localStorage.getItem('profissionalPontos');
+ if(salvo!==null){pontos=parseInt(salvo,10)||0;atualizarPontos()}
+}catch(e){}
+prepararJogo();
+</script>
+</body>
+</html>
