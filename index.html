@@ -1,165 +1,102 @@
-html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarsila do Amaral | Vida e Obra</title>
-    <button>❤️​<span>0</span></button>
-     <div>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<!-- COLE ESTE CÓDIGO NA PARTE DO JOGO DO SEU HTML -->
 
-        body {
-            background-color: #f4f7f6;
-            color: #2b0829;
-            line-height: 1.6;
-        }
+<section class="tela" id="jogoTela">
+  <div class="container">
+    <h2>🎮 Um Dia no Escritório</h2>
+    <p>Organize documentos, atenda clientes e conclua seu expediente antes do tempo acabar!</p>
 
-        header {
-            background: linear-gradient(135deg, #470431 0%, #b637c7 100%);
-            color: #ece1ea;
-            text-align: center;
-            padding: 60px 20px;
-        }
+    <div style="background:#102b42;padding:20px;border-radius:20px;margin:20px auto;max-width:900px">
+      <p>
+        📄 Documentos: <b id="docs">0/4</b> |
+        🤝 Clientes: <b id="clientes">0/2</b> |
+        ⭐ Pontos: <b id="score">0</b> |
+        ⏱️ Tempo: <b id="tempo">90</b>s
+      </p>
 
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+      <canvas id="game" width="800" height="480"
+        style="width:100%;height:auto;background:#eaf2e8;border-radius:12px;display:block;margin:20px auto;touch-action:none">
+      </canvas>
 
-        header p {
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
+      <p id="mensagem">Clique em iniciar para começar!</p>
 
-        main {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+      <button class="btn" onclick="iniciarJogo()">▶ INICIAR JOGO</button>
+      <button class="btn" onclick="mostrarTela('menuTela')">⬅ VOLTAR AO MENU</button>
 
-        section {
-            background: #cb88d1;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
+      <div style="margin-top:15px">
+        <button class="btn" onpointerdown="teclas.cima=true" onpointerup="teclas.cima=false" onpointerleave="teclas.cima=false">▲</button><br>
+        <button class="btn" onpointerdown="teclas.esquerda=true" onpointerup="teclas.esquerda=false" onpointerleave="teclas.esquerda=false">◀</button>
+        <button class="btn" onpointerdown="teclas.baixo=true" onpointerup="teclas.baixo=false" onpointerleave="teclas.baixo=false">▼</button>
+        <button class="btn" onpointerdown="teclas.direita=true" onpointerup="teclas.direita=false" onpointerleave="teclas.direita=false">▶</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-        h2 {
-            color: #921072;
-            border-bottom: 3px solid #920066;
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .bio-content {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .bio-text {
-            flex: 2;
-            min-width: 280px;
-        }
-
-        .obras-lista {
-            list-style: none;
-        }
-
-        .obras-lista li {
-            background: #df84e7;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-left: 5px solid #bc4cd3;
-            border-radius: 4px;
-            transition: transform 0.2s;
-        }
-
-        .obras-lista li:hover {
-            transform: translateX(5px);
-            background: #f0f7f4;
-        }
-
-        .obras-lista strong {
-            color: #961174;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background-color: #333;
-            color: #fff;
-            margin-top: 60px;
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Tarsila do Amaral</h1>
-        <p>A força e as cores do Modernismo Brasileiro</p>
-    </header>
-    <main>
-        <section id="biografia">
-            <h2>Quem Foi?</h2>
-            <div class="bio-content">
-                <div class="bio-text">
-                    <p><strong>Tarsila do Amaral</strong> (1886 – 1973) foi uma das pintoras e desenhistas mais importantes do Brasil. Figura central da primeira fase do movimento modernista brasileiro, ela soube como ninguém misturar as técnicas vanguardistas europeias (como o cubismo) com as cores e temas da nossa terra.</p>
-                    <br>
-                    <p>Embora não tenha participado fisicamente da Semana de Arte Moderna de 1922, ela integrou o célebre "Grupo dos Cinco" ao lado de Anita Malfatti, Oswald de Andrade, Mário de Andrade e Menotti Del Picchia, definindo os rumos da nova identidade artística nacional.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="fases">
-            <h2>Principais Fases Artísticas</h2>
-            <p>A carreira de Tarsila é marcada por momentos marcantes que refletiam suas transformações pessoais e políticas:</p>
-            <br>
-            <ul class="obras-lista">
-                <li><strong>Pau-Brasil (1924):</strong> Cores vivas ("caipiras", como ela dizia) mostrando a fauna, a flora e a modernidade das cidades brasileiras.</li>
-                <li><strong>Antropofágica (1928):</strong> Inspirada pelo quadro <em>Abaporu</em>, essa fase trazia figuras místicas, sonhos e a ideia de "engolir" a cultura estrangeira para criar algo puramente nacional.</li>
-                <li><strong>Social (Década de 1930):</strong> Focada nos trabalhadores, na industrialização e nos problemas sociais do país, cujo maior exemplo é a tela <em>Operários</em>.</li>
-            </ul>
-        </section>
-
-        <section id="obras-primas">
-            <h2>Obras de Destaque</h2>
-            <p>Se você quiser pesquisar mais sobre ela, não deixe de conferir estas telas revolucionárias:</p>
-            <br>
-            <ul class="obras-lista">
-                <li><strong>A Caipirinha (1923)</strong> - Uma de suas primeiras grandes conexões com as memórias de infância.</li>
-                <li><strong>Anaporu (1928)</strong> - A obra de arte mais valorizada do Brasil, que deu origem ao Manifesto Antropófago.</li>
-                <li><strong>Operários (1933)</strong> - O marco inicial da pintura social brasileira, exibindo a diversidade do povo trabalhador.</li>
-            </ul>
-        </section>
-    </main>
-
-    <footer>
-        <p>Página criada para homenagear a história da arte nacional.</p>
-    </footer>
-    <div>
-    <main>
-</body>
 <script>
-    const botao = document.querySelector("button");
-    botao.addEventListener("click", botaoClicado);
-    
-    function botaoClicado(){
-        console.log("fui clicado");
-      let texto = botao.querySelector("span");
-      texto.textContent++;
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let jogador, documentos, clientesJogo, obstaculos, pontosJogo;
+let tempoJogo, documentosFeitos, clientesAtendidos, jogoAtivo;
+let teclas = { cima:false, baixo:false, esquerda:false, direita:false };
+let loopJogo, ultimoTempo;
+
+function iniciarJogo() {
+  cancelAnimationFrame(loopJogo);
+
+  jogador = { x:70, y:240, tamanho:18, velocidade:3 };
+  documentos = [
+    {x:170,y:110,feito:false},
+    {x:380,y:160,feito:false},
+    {x:650,y:100,feito:false},
+    {x:550,y:380,feito:false}
+  ];
+  clientesJogo = [
+    {x:280,y:300,feito:false},
+    {x:710,y:300,feito:false}
+  ];
+  obstaculos = [
+    {x:240,y:170,w:70,h:50},
+    {x:440,y:280,w:90,h:45},
+    {x:110,y:350,w:65,h:45}
+  ];
+
+  pontosJogo = 0;
+  tempoJogo = 90;
+  documentosFeitos = 0;
+  clientesAtendidos = 0;
+  jogoAtivo = true;
+  ultimoTempo = performance.now();
+
+  document.getElementById("mensagem").textContent =
+    "Missão iniciada! Recolha os documentos e aproxime-se dos clientes.";
+  loopJogo = requestAnimationFrame(atualizarJogo);
+}
+
+function atualizarJogo(agora) {
+  if (!jogoAtivo) return;
+
+  const delta = Math.min((agora-ultimoTempo)/1000,0.05);
+  ultimoTempo = agora;
+  tempoJogo -= delta;
+
+  if (teclas.cima) jogador.y -= jogador.velocidade;
+  if (teclas.baixo) jogador.y += jogador.velocidade;
+  if (teclas.esquerda) jogador.x -= jogador.velocidade;
+  if (teclas.direita) jogador.x += jogador.velocidade;
+
+  jogador.x = Math.max(15,Math.min(canvas.width-15,jogador.x));
+  jogador.y = Math.max(15,Math.min(canvas.height-15,jogador.y));
+
+  documentos.forEach(d => {
+    if (!d.feito && Math.hypot(jogador.x-d.x,jogador.y-d.y)<28) {
+      d.feito = true;
+      documentosFeitos++;
+      pontosJogo += 100;
+      document.getElementById("mensagem").textContent =
+        "📄 Documento organizado! +100 pontos.";
     }
-    </script>
-</html>
+  });
+
+  clientesJogo.forEach(c => {
+    if (!c.feito && Math.h
